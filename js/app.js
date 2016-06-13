@@ -1,20 +1,38 @@
 $(document).ready(startGame);
 
+var board, flag, letter;
+
 function startGame() {
-    // Clear the game board.
-    $('td').html('&nbsp;');
 
-    // Set the flag to determine the next letter to add.
-    var flag = 1;
+    function resetBoard() {
+        // Clear the game board.
+        $('td').html('&nbsp;');
+        // Set the flag to determine the next letter to add.
+        flag = 1;
 
-    // Make a virtual board to store the moves.
-    var board = [
-        [0,1,2],
-        [0,1,2],
-        [0,1,2]
-    ];
+        // Make a virtual board to store the moves.
+        board = [
+            [0,1,2],
+            [0,1,2],
+            [0,1,2]
+        ];
+    }
 
-    var letter;
+    function gameOver(winner) {
+        $('#winner').show();
+        $('#winner span').text(winner);
+        $('#start').show();
+        $('#overlay').show();
+    }
+
+    // Start the game.
+    $('#start').on('click', function(e){
+        e.preventDefault();
+        $('#winner').hide();
+        $('#start').hide();
+        $('#overlay').hide();
+        resetBoard();
+    })
 
     // Add the letter when the cell is clicked.
     $('table').on('click', 'td', function(e) {
@@ -42,21 +60,25 @@ function startGame() {
             return num;
         }
 
-        getWinner(letter);
+        var winner = getWinner(letter);
+        if (winner) {
+            gameOver(winner);
+        }
         console.log(board);
 
         function getWinner(letter) {
             if (board[1][1] === letter) {
                 if (board[0][0] === letter && board[2][2] === letter) {
                     console.log("Diagonal winner.");
-                    return true;
-                } else if (board[[2][0]] === letter && board[0][2] === letter) {
+                    return letter;
+                } else if (board[2][0] === letter && board[0][2] === letter) {
                     console.log("Diagonal winner.");
-                    return true;
+                    return letter;
                 }
-            } else if (rowMatch(letter) || colMatch(letter)) {
+            }
+            if (rowMatch(letter) || colMatch(letter)) {
                 console.log("Player " + letter + " wins!");
-                return true;
+                return letter;
             }
             return false;
         }
