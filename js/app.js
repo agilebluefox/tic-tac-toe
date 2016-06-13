@@ -1,14 +1,18 @@
 $(document).ready(startGame);
 
-var board, flag, letter;
+var board, flag, letter, winner;
 
 function startGame() {
 
     function resetBoard() {
         // Clear the game board.
         $('td').html('&nbsp;');
+
         // Set the flag to determine the next letter to add.
         flag = 1;
+
+        // Clear the winner variable in case of a previous game.
+        winner = '';
 
         // Make a virtual board to store the moves.
         board = [
@@ -18,9 +22,15 @@ function startGame() {
         ];
     }
 
+    // When there's a winner or a tie, render the result and setup for another
+    // game.
     function gameOver(winner) {
+        if (winner === "Tie") {
+            $('#winner').html("<span>Tie. No winner.</span>");
+        } else {
+            $('#winner').html("Player <span>" + winner + "</span> wins!");
+        }
         $('#winner').show();
-        $('#winner span').text(winner);
         $('#start').show();
         $('#overlay').show();
     }
@@ -28,10 +38,11 @@ function startGame() {
     // Start the game.
     $('#start').on('click', function(e){
         e.preventDefault();
+        resetBoard();
         $('#winner').hide();
         $('#start').hide();
         $('#overlay').hide();
-        resetBoard();
+
     })
 
     // Add the letter when the cell is clicked.
@@ -40,10 +51,8 @@ function startGame() {
 
         var row = $(this).parent().attr('id');
         row = getNumber(row);
-        console.log(row);
         var col = $(this).attr('class');
         col = getNumber(col);
-        console.log(col);
 
         if (flag % 2 == 0) {
             $(this).text('O');
@@ -55,34 +64,62 @@ function startGame() {
             letter = 'X';
         }
 
+        // Get the row or column number from the id or class.
         function getNumber(string) {
             var num = string.match(/\d/);
             return num;
         }
 
+        // If a winner exists or it's a tie, run the game over function.
         var winner = getWinner(letter);
         if (winner) {
             gameOver(winner);
         }
-        console.log(board);
 
+        // A Player can win or tie on the current move.
+        // A win occurs is a row or column is filled with a single letter
+        // or either diagonal is filled with a single letter.
+        // If all cells are filled without a winner then the game ends in a tie.
         function getWinner(letter) {
+            // start by checking if the current letter has the center position.
             if (board[1][1] === letter) {
+                // If so, check the corners to see if they match it.
                 if (board[0][0] === letter && board[2][2] === letter) {
-                    console.log("Diagonal winner.");
                     return letter;
                 } else if (board[2][0] === letter && board[0][2] === letter) {
-                    console.log("Diagonal winner.");
                     return letter;
                 }
             }
+            // If no diagonal match is found, continue searching for rows or
+            // columns that are filled with the current letter.
             if (rowMatch(letter) || colMatch(letter)) {
-                console.log("Player " + letter + " wins!");
+                return letter;
+            // If no rows or columns are filled, check for a tie.
+            } else if (tieGame()) {
+                letter = "Tie";
                 return letter;
             }
+            // If no winner or tie, keep playing.
             return false;
         }
 
+        // Checks for a tie game - if the array values are all strings
+        // then no more moves "should" be possible.
+        function tieGame() {
+            var moves = 1;
+            for (var i = 0; i < 3; i++) {
+                for (var j = 0; j < 3; j++) {
+                    if (isNaN(board[i][j])) {
+                        moves += 1;
+                    }
+                }
+            }
+            if (moves > 9) {
+                return true;
+            }
+        }
+
+        // Iterate over the rows to see if any are filled with the same letter.
         function rowMatch(letter) {
             for (var i = 0; i < 3; i++) {
                 var rowCount = 0;
@@ -98,7 +135,7 @@ function startGame() {
                 }
             }
         }
-
+        // Iterate over the columns to see if any are filled with the same letter.
         function colMatch(letter) {
             for (var i = 0; i < 3; i++) {
                 var colCount = 0;
@@ -115,6 +152,7 @@ function startGame() {
             }
         }
 
+        // Finally, update the flag and keep playing.
         flag +=1;
 
     });

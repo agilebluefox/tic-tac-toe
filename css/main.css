@@ -1,5 +1,5 @@
 * {
-    border: 1px dashed red;
+    /* border: 1px dashed red; */
     box-sizing: border-box;
 }
 
@@ -22,8 +22,13 @@ body {
 div.container {
     width: 80%;
     height: 100%;
-    margin: auto;
     text-align: center;
+    margin: auto;
+    position: relative;
+}
+
+h1.title {
+    font-size: 2.5rem;
 }
 
 table {
@@ -67,14 +72,26 @@ tr, td {
     color: red;
 }
 
+.announcement {
+
+}
+
 #start {
-    z-index: 12;
-    font-size: 5rem;
+    z-index: 15;
     display: block;
     position: fixed;
-    top: 25%;
-    left: 25%;
-    color: red;
-    background-color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: green;
+    border: 1px solid black;
     cursor: pointer;
+    border-radius: 10px;
+    padding: 3rem;
+}
+
+#start h1 {
+    font-size: 5rem;
+    color: white;
+    margin: 0;
 }
