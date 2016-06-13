@@ -95,3 +95,9 @@ tr, td {
     color: white;
     margin: 0;
 }
+
+#message {
+    font-size: 3rem;
+    color: red;
+    display: none;
+}

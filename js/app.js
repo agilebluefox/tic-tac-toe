@@ -115,6 +115,11 @@ function gameOver(winner) {
     $('#overlay').show();
 }
 
+function alreadyTaken() {
+    $('#message').text('That square is already taken! Pick another!');
+    $('#message').show();
+}
+
 // Start and run the game.
 function startGame() {
 
@@ -137,14 +142,21 @@ function startGame() {
         var col = $(this).attr('class');
         col = getNumber(col);
 
-        if (flag % 2 == 0) {
-            $(this).text('O');
-            board[row][col] = 'O';
-            letter = 'O';
+        if (board[row][col] === "X" || board[row][col] === "O") {
+            alreadyTaken();
         } else {
-            $(this).text('X');
-            board[row][col] = 'X';
-            letter = 'X';
+            $('#message').hide();
+           if (flag % 2 == 0) {
+               $(this).text('O');
+               board[row][col] = 'O';
+               letter = 'O';
+           } else {
+               $(this).text('X');
+               board[row][col] = 'X';
+               letter = 'X';
+           }
+           // Finally, update the flag and keep playing.
+           flag +=1;
         }
 
         // If a winner exists or it's a tie, run the game over function.
@@ -152,9 +164,6 @@ function startGame() {
         if (winner) {
             gameOver(winner);
         }
-
-        // Finally, update the flag and keep playing.
-        flag +=1;
 
     });
 }
