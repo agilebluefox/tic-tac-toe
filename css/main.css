@@ -1,0 +1,46 @@
+* {
+    border: 1px dashed red;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 10rem;
+}
+
+div.container {
+    width: 80%;
+    height: 100%;
+    margin: auto;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    empty-cells: show;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+tr, td {
+    padding: 1rem;
+}
+
+ td {
+    width: 12rem;
+    height: 12rem;
+    text-align: center;
+ }
+
+#row-0 .col-1, #row-2 .col-1{
+    border-right: 3px solid black;
+    border-left: 3px solid black;
+}
+
+#row-1 .col-0, #row-1 .col-2 {
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+}
+
+#row-1 .col-1 {
+    border: 3px solid black;
+}
