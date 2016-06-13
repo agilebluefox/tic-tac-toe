@@ -4,7 +4,7 @@
 }
 
 body {
-    font-size: 10rem;
+
 }
 
 div.container {
@@ -19,6 +19,7 @@ table {
     empty-cells: show;
     margin-left: auto;
     margin-right: auto;
+    font-size: 10rem;
 }
 
 tr, td {
@@ -43,4 +44,17 @@ tr, td {
 
 #row-1 .col-1 {
     border: 3px solid black;
+}
+
+#winner {
+    display: none;
+}
+
+#winner span {
+    font-size: 5rem;
+    color: red;
+}
+
+#start {
+
 }
